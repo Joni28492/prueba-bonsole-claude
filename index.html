@@ -197,8 +197,8 @@
 
   products.forEach(p => {
     const img = p.done
-      ? `../catalogo/modificadas/${p.archivo}.png`
-      : `../catalogo/${p.archivo}.jpg`;
+      ? `images/${p.archivo}.png`
+      : `images/${p.archivo}.jpg`;
 
     const card = document.createElement("article");
     card.className = "card";
