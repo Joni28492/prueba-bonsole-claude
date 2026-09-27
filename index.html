@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonsole — Catálogo</title>
+<style>
+  :root {
+    --bg: #0f0d0b;
+    --bg-card: #17130f;
+    --gold: #c9a15a;
+    --gold-soft: #e3c98f;
+    --text: #f2ece2;
+    --text-muted: #b7ac9b;
+    --border: #2a241d;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+
+  header {
+    text-align: center;
+    padding: 64px 20px 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    letter-spacing: 0.25em;
+    color: var(--gold-soft);
+    font-weight: normal;
+  }
+
+  header p {
+    margin: 14px 0 0;
+    color: var(--text-muted);
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 28px;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold);
+  }
+
+  .card-image {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: #1c1712;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .badge-pending {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(15, 13, 11, 0.85);
+    color: var(--gold-soft);
+    border: 1px solid var(--gold);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 3px;
+  }
+
+  .card-body {
+    padding: 18px 20px 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .card-body h2 {
+    margin: 0 0 8px;
+    font-size: 1.15rem;
+    font-weight: normal;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+
+  .card-body p {
+    margin: 0 0 16px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+    flex: 1;
+  }
+
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+  }
+
+  .price-main {
+    color: var(--gold-soft);
+    font-size: 1.3rem;
+  }
+
+  .price-sub {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 50px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>BONSOLE</h1>
+  <p>Catálogo de bolsos artesanales</p>
+</header>
+
+<main>
+  <div class="grid" id="catalog-grid"></div>
+</main>
+
+<footer>&copy; Bonsole</footer>
+
+<script>
+  const products = [
+    { nombre: "Midnight Mosaic", archivo: "midnight-mosaic", descripcion: "Bolso redondo pequeño tejido en mosaico azul marino con teselas blanco y dorado, ribete burdeos y asa cadena dorada. Ideal para looks deportivos o de día que buscan un toque de color.", precio: 45, pvp: 59, done: true },
+    { nombre: "Cocoa Velvet", archivo: "cocoa-velvet", descripcion: "Bolso mini de solapa en pana acanalada color chocolate, cierre imantado y asa cadena dorada. Compañero casual perfecto para el día a día.", precio: 45, pvp: 59, done: true },
+    { nombre: "Truffle Halo", archivo: "truffle-halo", descripcion: "Bolso redondo tejido en tono chocolate con cadena dorada y broche metálico. Un clásico versátil para cualquier outfit informal.", precio: 45, pvp: 59, done: true },
+    { nombre: "Terra Foliage", archivo: "terra-foliage", descripcion: "Bolso de solapa tejido en marrón con ribetes trenzados crema y cierre de broche dorado. Elegancia natural para el otoño.", precio: 60, pvp: 79, done: true },
+    { nombre: "Cobalt Cord", archivo: "cobalt-cord", descripcion: "Bolso de solapa tejido en azul cobalto con rayas de cordón marrón y cierre romboidal dorado. Un toque de color para destacar.", precio: 60, pvp: 79, done: true },
+    { nombre: "Mauve Muse", archivo: "mauve-muse", descripcion: "Bolso de solapa tejido en espiga malva con herraje dorado y asa cadena. Delicado y femenino, ideal para looks de tarde.", precio: 60, pvp: 79, done: true },
+    { nombre: "Frost Chevron", archivo: "frost-chevron", descripcion: "Bolso de solapa en chenilla chevron blanco, gris y negro con cadena dorada. Textura invernal con un aire sofisticado.", precio: 60, pvp: 79, done: true },
+    { nombre: "Opal Weave", archivo: "opal-weave", descripcion: "Bolso de mano tejido en tonos iridiscentes azul, verde y violeta con asa superior trenzada y cierre romboidal dorado. Pieza joya para eventos de noche.", precio: 60, pvp: 79, done: true },
+    { nombre: "Lilac Zigzag", archivo: "lilac-zigzag", descripcion: "Bolso de solapa tejido en zigzag lila, beige y marrón con cierre dorado. Bohemio y colorido, perfecto para el día.", precio: 60, pvp: 79, done: true },
+    { nombre: "Cherry Chevron", archivo: "cherry-chevron", descripcion: "Bolso de solapa en chevron burdeos y blanco con broche dorado en forma de U. Un contraste atrevido para looks de oficina o cóctel.", precio: 60, pvp: 79, done: true },
+    { nombre: "Bee Noir", archivo: "bee-noir", descripcion: "Bolso de solapa tejido en negro con aplique de abeja dorada y cadena a juego. Elegancia nocturna con un guiño simbólico.", precio: 60, pvp: 79, done: true },
+    { nombre: "Merlot Bee", archivo: "merlot-bee", descripcion: "Bolso de solapa tejido en burdeos con asa cadena dorada y broche de abeja. Sofisticación para eventos formales y bodas.", precio: 65, pvp: 85, done: true },
+    { nombre: "Bordeaux Lattice", archivo: "bordeaux-lattice", descripcion: "Bolso de solapa con motivo de rombos burdeos y crema, herrajes dorados geométricos y correa desmontable. Un diseño gráfico de alta costura.", precio: 70, pvp: 89, done: false },
+    { nombre: "Silver Plume", archivo: "silver-plume", descripcion: "Bolso de solapa metalizado plateado en espiga con cadena y eslabones de resina jaspeada. Brillo puro para la noche.", precio: 70, pvp: 89, done: false },
+    { nombre: "Emerald Gleam", archivo: "emerald-gleam", descripcion: "Bolso de solapa metalizado en verde esmeralda con cadena dorada. Un destello de color para ocasiones especiales.", precio: 70, pvp: 89, done: false },
+    { nombre: "Gilded Noir", archivo: "gilded-noir", descripcion: "Bolso de solapa en negro con franja central dorada texturizada y cadena a juego. Contraste audaz para eventos de gala.", precio: 70, pvp: 89, done: false },
+    { nombre: "Saffron Noir", archivo: "saffron-noir", descripcion: "Bolso de solapa en mostaza dorado con ribete negro y cadena metálica. Calidez y lujo para la temporada de fiestas.", precio: 70, pvp: 89, done: false },
+    { nombre: "Ember Fox", archivo: "ember-fox", descripcion: "Bolso tipo tote en piel terracota con paneles de pelo sintético gris en los laterales y asas superiores. Un statement texturizado y cálido.", precio: 75, pvp: 99, done: false },
+    { nombre: "Rainbow Reed", archivo: "rainbow-reed", descripcion: "Bolso de solapa tejido multicolor en tonos rojo, verde y amarillo con cadena dorada. Alegre y veraniego, ideal para el día.", precio: 75, pvp: 99, done: true },
+    { nombre: "Fuchsia Tweed", archivo: "fuchsia-tweed", descripcion: "Bolso de solapa en tweed rosa y fucsia con cadena de eslabones de resina carey. Un toque chic y contemporáneo.", precio: 75, pvp: 99, done: true },
+    { nombre: "Dune Navy", archivo: "dune-navy", descripcion: "Bolso de solapa tejido en rayas azul marino y arena con cadena dorada. Combinación náutica y atemporal.", precio: 75, pvp: 99, done: true },
+    { nombre: "Lavender Stripe", archivo: "lavender-stripe", descripcion: "Bolso de solapa tejido en rayas lila y azul marino con cadena dorada. Fresco y favorecedor para looks urbanos.", precio: 75, pvp: 99, done: true },
+    { nombre: "Blush Trunk", archivo: "blush-trunk", descripcion: "Bolso estructurado tipo baúl en rosa y negro con broche dorado y correa ancha ajustable. Diseño de autor con mucha personalidad.", precio: 75, pvp: 99, done: true },
+    { nombre: "Granny Noir", archivo: "granny-noir", descripcion: "Bolso tote de ganchillo negro con motivo granny square multicolor y asas rígidas de carey. Pieza artesanal única.", precio: 75, pvp: 119, done: true },
+    { nombre: "Bamboo Blossom", archivo: "bamboo-blossom", descripcion: "Bolso tote de ganchillo en tono arena con motivo floral granny square y asas de bambú natural. Hecho a mano con espíritu bohemio.", precio: 75, pvp: 119, done: true },
+    { nombre: "Sienna Squares", archivo: "sienna-squares", descripcion: "Bolso tote de ganchillo en tierra cocida con motivos granny square turquesa y asas de cuero trenzado. Artesanía colorida para el día a día.", precio: 75, pvp: 119, done: true },
+  ];
+
+  const grid = document.getElementById("catalog-grid");
+
+  products.forEach(p => {
+    const img = p.done
+      ? `../catalogo/modificadas/${p.archivo}.png`
+      : `../catalogo/${p.archivo}.jpg`;
+
+    const card = document.createElement("article");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="card-image">
+        <img src="${img}" alt="${p.nombre}" loading="lazy">
+        ${!p.done ? '<span class="badge-pending">Próximamente</span>' : ''}
+      </div>
+      <div class="card-body">
+        <h2>${p.nombre}</h2>
+        <p>${p.descripcion}</p>
+        <div class="price-row">
+          <span class="price-main">${p.pvp} €</span>
+          <span class="price-sub">Distribuidor: ${p.precio} €</span>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+</script>
+
+</body>
+</html>
